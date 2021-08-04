@@ -13,7 +13,7 @@ services:
             - mysql.localhost.quickstart.com.br
         # we mount the working dir into the container, handy for development
         volumes:
-            - .:/var/www/html/
+            - .:/var/www/html
         environment:
             - SECURITY_SALT=ashjg23697sds97139871298ashk
             - MYSQL_URL=mysql.localhost.quickstart.com.br
