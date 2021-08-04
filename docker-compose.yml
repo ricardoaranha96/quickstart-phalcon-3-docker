@@ -1,0 +1,36 @@
+version: "3.5"
+# define all services
+services:
+    quickstart:
+        # we want to use the image which is build from our Dockerfile
+        build:
+            context: .
+        # apache is running on port 80 but we want to expose this to port 4000 on our local machine
+        ports:
+            - "4000:80"
+        # we depending on the mysql backend
+        depends_on:
+            - mysql.localhost.quickstart.com.br
+        # we mount the working dir into the container, handy for development
+        volumes:
+            - .:/var/www/html/
+        environment:
+            - SECURITY_SALT=ashjg23697sds97139871298ashk
+            - MYSQL_URL=mysql.localhost.quickstart.com.br
+            - MYSQL_USERNAME=root
+            - MYSQL_PASSWORD=root
+    mysql.localhost.quickstart.com.br:
+        image: mariadb:10.5.9
+        # we mount a datavolume to make sure we don't loose data
+        volumes:
+            - mariadb_data:/var/lib/mysql
+            - ./mysql/db:/var/lib/mysql/db
+        # setting some envvars to create the DB
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=quickstart
+            - TZ=America/Sao_Paulo
+        ports:
+            - 3306:3306
+volumes:
+    mariadb_data:
